@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "683029586221",
+    "project_id": "tapp-f6505",
+    "storage_bucket": "tapp-f6505.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:683029586221:android:c4ec95d1217a05de91f3a4",
+        "android_client_info": {
+          "package_name": "com.example.tappze"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDpAy2jQbqpJxIIaQVG642n1G82Q5muiYE"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

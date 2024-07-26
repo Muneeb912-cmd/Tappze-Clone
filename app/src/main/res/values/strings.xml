@@ -1,0 +1,51 @@
+<resources>
+    <string name="app_name">Tappze</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="it_s_not_just_a_tap_it_s_a_way_of_thinking">It\'s not just a Tap, it\'s a way of thinking</string>
+    <string name="create_account">Create Account</string>
+
+    <string name="existing_member">Existing Member? </string>
+    <string name="sign_in">Sign In</string>
+    <string name="full_name">Full Name</string>
+    <string name="user_name">User Name</string>
+    <string name="email">Email</string>
+    <string name="password">Password</string>
+    <string name="allowed_characters">Allowed characters are a-z,0-9. Special characters are not allowed</string>
+    <string name="sign_up">Sign Up</string>
+    <string name="forgot_password">Forgot Password?</string>
+    <string name="profile">Profile</string>
+    <string name="nfc">NFC</string>
+    <string name="share">Share</string>
+    <string name="analytics">Analytics</string>
+    <string name="settings">Settings</string>
+    <string name="select_gender">Select Gender</string>
+    <string name="scan_tag">Scan Tag</string>
+    <string name="purchase_items">Purchase Items</string>
+    <string name="subscriptions">Subscriptions</string>
+    <string name="change_password">Change Password</string>
+    <string name="contact_us">Contact Us</string>
+    <string name="sign_out">Sign Out</string>
+    <string name="open">Open</string>
+    <string name="delete">Delete</string>
+    <string name="save">Save</string>
+    <string name="please_select_your_package">Please select your package</string>
+    <string name="package_1">Package 1</string>
+    <string name="package_2">Package 2</string>
+    <string name="yearly">Yearly</string>
+    <string name="purchase_yearly_package">Purchase yearly package</string>
+    <string name="monthly">Monthly</string>
+    <string name="purchase_monthly_package">Purchase monthly package</string>
+    <string name="do_you_want_to_purchase_tappze_card">Do you want to purchase Tappze Card?</string>
+    <string name="buy_tappze_card">Buy Tappze Card</string>
+    <string name="basic_features">Basic Features</string>
+    <string name="pro_features">Pro Features</string>
+    <string name="buy">Buy</string>
+    <string name="reset_password">Reset Password</string>
+    <string name="send">Send</string>
+    <string-array name="gender">
+        <item>Male</item>
+        <item>Fe-Male</item>
+        <item>Others</item>
+    </string-array>
+</resources>

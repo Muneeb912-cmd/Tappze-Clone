@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav_graph"
+    app:startDestination="@id/createAccountFragment">
+
+    <fragment
+        android:id="@+id/createAccountFragment"
+        android:name="com.example.tappze.ui.CreateAccountFragment"
+        android:label="fragment_create_account_"
+        tools:layout="@layout/fragment_create_account_">
+        <action
+            android:id="@+id/action_createAccountFragment_to_signInFragment"
+            app:destination="@id/signInFragment" />
+        <action
+            android:id="@+id/action_createAccountFragment_to_signUpFragment"
+            app:destination="@id/signUpFragment" />
+        <action
+            android:id="@+id/action_createAccountFragment_to_mainAppActivity2"
+            app:destination="@id/mainAppActivity2" />
+    </fragment>
+    <fragment
+        android:id="@+id/signInFragment"
+        android:name="com.example.tappze.com.example.tappze.ui.sign_in.SignInFragment"
+        android:label="fragment_sign_in"
+        tools:layout="@layout/fragment_sign_in">
+        <action
+            android:id="@+id/action_signInFragment_to_signUpFragment"
+            app:destination="@id/signUpFragment" />
+        <action
+            android:id="@+id/action_signInFragment_to_mainAppActivity2"
+            app:destination="@id/mainAppActivity2" />
+        <deepLink
+            app:uri="myapp://sign_in" />
+    </fragment>
+    <fragment
+        android:id="@+id/signUpFragment"
+        android:name="com.example.tappze.com.example.tappze.ui.sign_up.SignUpFragment"
+        android:label="fragment_sign_up"
+        tools:layout="@layout/fragment_sign_up">
+        <action
+            android:id="@+id/action_signUpFragment_to_mainAppActivity2"
+            app:destination="@id/mainAppActivity2" />
+    </fragment>
+    <fragment
+        android:id="@+id/mainAppActivity2"
+        android:name="com.example.tappze.ui.MainAppActivityFragment"
+        android:label="fragment_main_app_activity"
+        tools:layout="@layout/fragment_main_app_activity">
+        <action
+            android:id="@+id/action_mainAppActivity2_to_signInFragment"
+            app:destination="@id/signInFragment" />
+
+    </fragment>
+</navigation>
