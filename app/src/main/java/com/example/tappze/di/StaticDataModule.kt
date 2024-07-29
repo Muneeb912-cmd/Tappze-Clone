@@ -13,8 +13,8 @@ import javax.inject.Singleton
 object StaticDataModule {
     @Provides
     @Singleton
-    fun provideSocialLinks(): List<SocialLinks> {
-        return listOf(
+    fun provideSocialLinks(): ArrayList<SocialLinks> {
+        return arrayListOf(
             SocialLinks(R.drawable.ic_mobile, "Phone"),
             SocialLinks(R.drawable.ic_instagram, "Instagram"),
             SocialLinks(R.drawable.ic_facebook, "Facebook"),
@@ -95,6 +95,29 @@ object StaticDataModule {
             "Calendly" to "1. Open up your Calendly app and log into your account.\n" +
                     "2. Copy the URL link below your name.\n" +
                     "3. Paste the copied link into the Calendly URL field."
+        )
+    }
+    @Provides
+    @Singleton
+    fun provideImageResMap(): Map<String, Int> {
+        return mapOf(
+            "Phone" to R.drawable.ic_mobile,
+            "Instagram" to R.drawable.ic_instagram,
+            "Facebook" to R.drawable.ic_facebook,
+            "TikTok" to R.drawable.ic_tiktok,
+            "Whatsapp" to R.drawable.ic_whatsapp,
+            "LinkedIn" to R.drawable.ic_linkedin,
+            "Telegram" to R.drawable.ic_telegram,
+            "Snapchat" to R.drawable.ic_snapchat,
+            "X" to R.drawable.ic_twitter,
+            "Website" to R.drawable.ic_internet,
+            "YouTube" to R.drawable.ic_youtube,
+            "Spotify" to R.drawable.ic_spotify,
+            "Email" to R.drawable.ic_gmail,
+            "PayPal" to R.drawable.ic_paypal,
+            "Pinterest" to R.drawable.ic_pinterest,
+            "Skype" to R.drawable.ic_skype,
+            "Calendly" to R.drawable.ic_calendly,
         )
     }
 }

@@ -43,6 +43,8 @@
     <string name="buy">Buy</string>
     <string name="reset_password">Reset Password</string>
     <string name="send">Send</string>
+    <string name="error_occured">Error Occured</string>
+    <string name="retry">Retry</string>
     <string-array name="gender">
         <item>Male</item>
         <item>Fe-Male</item>

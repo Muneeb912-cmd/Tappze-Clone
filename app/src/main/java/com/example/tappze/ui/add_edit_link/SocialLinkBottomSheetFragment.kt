@@ -37,6 +37,8 @@ class SocialLinkBottomSheetFragment : BottomSheetDialogFragment() {
     private lateinit var helpText: String
     @Inject
     lateinit var helpTexts: Map<String, String>
+    @Inject
+    lateinit var socialLinks: ArrayList<SocialLinks>
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -59,19 +61,26 @@ class SocialLinkBottomSheetFragment : BottomSheetDialogFragment() {
             instructionAlertBox()
         }
 
+        binding.deleteLink.setOnClickListener{
+            deleteLink()
+        }
+
         return binding.root
     }
 
     private fun populateUi() {
         socialLink.let {
-            binding.socialLinkImgBottomSheet.setImageResource(it.imageResId)
-            binding.bottomSheetHeading.text = it.text
-            binding.socialLinkInput.hint = it.text
-            helpText = helpTexts[it.text] ?: "No information available."
+            val linkItem = socialLinks.find { it.text == socialLink.text }
+            linkItem?.let { item ->
+                binding.socialLinkImgBottomSheet.setImageResource(item.imageResId)
+                binding.bottomSheetHeading.text = item.text
+                binding.socialLinkInput.hint = item.text
+                helpText = helpTexts[item.text] ?: "No information available."
+            }
         }
         binding.socialLinkInput.setText(link)
-
     }
+
 
     override fun getTheme(): Int {
         return R.style.BottomSheetDialogTheme
@@ -146,4 +155,12 @@ class SocialLinkBottomSheetFragment : BottomSheetDialogFragment() {
             return fragment
         }
     }
+
+    private fun deleteLink() {
+        authViewModel.deleteLink(socialLink.text)
+
+        dismiss()
+    }
 }
+
+

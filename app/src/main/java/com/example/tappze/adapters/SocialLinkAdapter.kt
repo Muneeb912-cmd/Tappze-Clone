@@ -9,7 +9,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.tappze.R
 import com.example.tappze.com.example.tappze.models.SocialLinks
 
-class SocialLinkAdapter(private val items: List<SocialLinks>, private val listener: OnItemClickListener) : RecyclerView.Adapter<SocialLinkAdapter.ViewHolder>() {
+class SocialLinkAdapter(private var items: ArrayList<SocialLinks>, private val listener: OnItemClickListener) : RecyclerView.Adapter<SocialLinkAdapter.ViewHolder>() {
     interface OnItemClickListener {
         fun onItemClick(socialLink: SocialLinks)
     }

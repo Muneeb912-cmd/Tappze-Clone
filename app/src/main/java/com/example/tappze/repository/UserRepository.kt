@@ -21,4 +21,7 @@ interface UserRepository {
     suspend fun uploadImageAndUpdateUser(userData: User): Response<Unit>
     fun generateQRCode(url: String): Bitmap?
     suspend fun sendChangePasswordEmail(email:String):Response<Unit>
+    fun stopObservingLinks()
+    fun observeLinks(userId: String, onLinksUpdated: (Links?) -> Unit)
+    suspend fun deleteLink(linkToDelete: String):Response<Unit>
 }

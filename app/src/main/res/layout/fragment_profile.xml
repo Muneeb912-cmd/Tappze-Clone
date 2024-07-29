@@ -4,7 +4,8 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    tools:context=".ui.ProfileFragment"
+    tools:context=".com.example.tappze.ui.profile.ProfileFragment"
+    android:layout_margin="15dp"
     android:orientation="vertical">
 
     <androidx.cardview.widget.CardView
@@ -12,7 +13,7 @@
         android:layout_height="wrap_content"
         app:cardCornerRadius="15dp"
         android:elevation="10dp"
-        android:layout_margin="15dp"
+
         app:cardBackgroundColor="@android:color/black">
 
         <androidx.constraintlayout.widget.ConstraintLayout
@@ -21,7 +22,7 @@
            >
 
             <com.google.android.material.imageview.ShapeableImageView
-                android:id="@+id/shapableImageView"
+                android:id="@+id/userPhoto"
                 android:layout_width="130dp"
                 android:layout_height="130dp"
                 android:layout_gravity="center"
@@ -43,7 +44,7 @@
                 android:textColor="@android:color/white"
                 android:textSize="30sp"
                 android:textStyle="bold"
-                app:layout_constraintTop_toBottomOf="@+id/shapableImageView"
+                app:layout_constraintTop_toBottomOf="@+id/userPhoto"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"/>
 
@@ -63,6 +64,45 @@
         </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.cardview.widget.CardView>
 
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:padding="18dp"
+        tools:context=".ui.NewsFragment">
+
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/savedLinks"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            tools:listitem="@layout/social_link_item"
+            android:visibility="gone" />
+
+        <ProgressBar
+            android:id="@+id/progressBar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true" />
+
+        <TextView
+            android:id="@+id/errorTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:text="@string/error_occured"
+            android:visibility="gone" />
+        <Button
+            android:id="@+id/refreshButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/errorTextView"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="16dp"
+            android:text="@string/retry"
+            android:visibility="gone" />
+
+
+    </RelativeLayout>
 
 </LinearLayout>
 

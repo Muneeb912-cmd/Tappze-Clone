@@ -46,14 +46,14 @@ class SignUpViewModel @Inject constructor(
         if (password.isEmpty()) {
             errors["password"] = "Password cannot be empty"
         } else if (!isPasswordValid(password)) {
-            errors["password"] = "Password must be more than 6 characters"
+            errors["password"] = "Password must be at least 6 characters"
         }
 
         return errors
     }
 
     private fun isPasswordValid(password: String): Boolean {
-        return password.length > 6
+        return password.length >= 6
     }
 
     private fun isUserNameValid(userName: String): Boolean {

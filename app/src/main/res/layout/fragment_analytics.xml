@@ -46,7 +46,7 @@
             </LinearLayout>
 
             <com.google.android.material.imageview.ShapeableImageView
-                android:id="@+id/shareFragmentImg"
+                android:id="@+id/analyticsFragImg"
                 android:layout_width="120dp"
                 android:layout_height="120dp"
                 android:layout_margin="20dp"

@@ -8,7 +8,9 @@ import com.example.tappze.com.example.tappze.models.User
 import com.example.tappze.repository.UserRepository
 import com.example.tappze.utils.Response
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.firestore.FieldValue
 import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.firestore.ListenerRegistration
 import com.google.firebase.storage.FirebaseStorage
 import com.google.zxing.BarcodeFormat
 import com.google.zxing.WriterException
@@ -23,6 +25,8 @@ class RepoImplementation @Inject constructor(
     private val firebaseStorage: FirebaseStorage
 ) : UserRepository {
 
+    private var linksListener: ListenerRegistration? = null
+
     override suspend fun signUpWithEmailPassword(
         email: String,
         password: String,
@@ -32,10 +36,10 @@ class RepoImplementation @Inject constructor(
         return try {
             val authResult = auth.createUserWithEmailAndPassword(email, password).await()
             val user = authResult.user
-            if (user != null) {
+            user?.let {
                 val newUser = User(
                     email = email,
-                    userId = user.uid,
+                    userId = it.uid,
                     fullName = name,
                     userName = userName,
                     aboutYourself = "Not Added",
@@ -45,35 +49,20 @@ class RepoImplementation @Inject constructor(
                     gender = "Not Added",
                     company = "Not Added"
                 )
-                val saveResult = saveUser(newUser)
-                if (saveResult is Response.Success) {
-                    Response.Success(Unit)
-                } else {
-                    Response.Error((saveResult as Response.Error).exception)
-                }
-            } else {
-                Response.Error(Exception("User creation failed"))
-            }
+                saveUser(newUser)
+            } ?: Response.Error(Exception("User creation failed"))
         } catch (e: Exception) {
             Response.Error(e)
         }
     }
 
-
     override suspend fun signInWithEmailPassword(email: String, password: String): Response<User> {
         return try {
             val authResult = auth.signInWithEmailAndPassword(email, password).await()
             val user = authResult.user
-            if (user != null) {
-                val userData = getUserData(user.uid)
-                if (userData is Response.Success) {
-                    Response.Success(userData.data)
-                } else {
-                    Response.Error((userData as Response.Error).exception)
-                }
-            } else {
-                Response.Error(Exception("Sign-in failed"))
-            }
+            user?.let {
+                getUserData(it.uid)
+            } ?: Response.Error(Exception("Sign-in failed"))
         } catch (e: Exception) {
             Response.Error(e)
         }
@@ -85,8 +74,8 @@ class RepoImplementation @Inject constructor(
             val document = userRef.get().await()
 
             if (document.exists()) {
-                val user = document.toObject(User::class.java)
-                Response.Success(user ?: User()) // Return empty User if null
+                val user = document.toObject(User::class.java) ?: User()
+                Response.Success(user)
             } else {
                 Response.Error(Exception("No user document found"))
             }
@@ -97,11 +86,9 @@ class RepoImplementation @Inject constructor(
 
     private suspend fun saveUser(user: User): Response<Unit> {
         return try {
-            // Save user data
             val userRef = firestore.collection("Tappze").document(user.userId!!)
             userRef.set(user).await()
 
-            // Save empty links document
             val linksRef = userRef.collection("SocialLinks").document("Links")
             linksRef.set(Links()).await()
 
@@ -113,17 +100,14 @@ class RepoImplementation @Inject constructor(
 
     override suspend fun getExistingLinks(userId: String): Response<Links> {
         return try {
-            val linksRef = firestore
-                .collection("Tappze")
-                .document(userId)
-                .collection("SocialLinks")
-                .document("Links")
+            val linksRef = firestore.collection("Tappze").document(userId)
+                .collection("SocialLinks").document("Links")
 
             val document = linksRef.get().await()
 
             if (document.exists()) {
-                val links = document.toObject(Links::class.java)
-                Response.Success(links ?: Links()) // Return empty Links if null
+                val links = document.toObject(Links::class.java) ?: Links()
+                Response.Success(links)
             } else {
                 Response.Error(Exception("No links document found"))
             }
@@ -134,17 +118,15 @@ class RepoImplementation @Inject constructor(
 
     override suspend fun addLink(userId: String, appName: String, link: String): Response<Unit> {
         return try {
-            // Fetch existing links
             val existingLinksResponse = getExistingLinks(userId)
             if (existingLinksResponse is Response.Error) {
                 return Response.Error(existingLinksResponse.exception)
             }
 
             val existingLinks = (existingLinksResponse as Response.Success).data
-            val updatedLinks = existingLinks.links.toMutableMap() // Convert to mutable map
-            updatedLinks[appName] = link // Add new link
+            val updatedLinks = existingLinks.links.toMutableMap()
+            updatedLinks[appName] = link
 
-            // Update links in Firestore
             val linksRef = firestore.collection("Tappze").document(userId)
                 .collection("SocialLinks").document("Links")
 
@@ -155,39 +137,30 @@ class RepoImplementation @Inject constructor(
         }
     }
 
-    private fun updateUser(userData: User) {
-        userData.userId?.let { firestore.collection("Tappze").document(it).set(userData) }
+    private suspend fun updateUser(userData: User) {
+        userData.userId?.let { firestore.collection("Tappze").document(it).set(userData).await() }
     }
 
     override suspend fun uploadImageAndUpdateUser(userData: User): Response<Unit> {
         val storageReference = firebaseStorage.reference
-        val userImagePath = "Photos/${userData.userId}" // Use user ID for consistent path
+        val userImagePath = "Photos/${userData.userId}"
 
-        // Reference to the user's image
         val ref = storageReference.child(userImagePath)
 
         return try {
-            // Check if the image already exists
             val imageExists = try {
                 ref.metadata.await()
-                true // Image exists
+                true
             } catch (e: Exception) {
-                false // Image does not exist
+                false
             }
 
-            if (userData.photo != null && imageExists) {
-                // If the image exists, update it
-                val uploadTask = ref.putFile(userData.photo!!.toUri()).await()
-                val downloadUrl = ref.downloadUrl.await()
-                userData.photo = downloadUrl.toString()
-            } else if (userData.photo != null) {
-                // If the image does not exist, upload it
-                val uploadTask = ref.putFile(userData.photo!!.toUri()).await()
+            userData.photo?.let {
+                val uploadTask = ref.putFile(it.toUri()).await()
                 val downloadUrl = ref.downloadUrl.await()
                 userData.photo = downloadUrl.toString()
             }
 
-            // Update user data
             updateUser(userData)
             preferencesHelper.updateUser { currentUser ->
                 currentUser.copy(
@@ -234,4 +207,45 @@ class RepoImplementation @Inject constructor(
         }
     }
 
+    override suspend fun deleteLink(linkToDelete: String): Response<Unit> {
+        return try {
+            val userId = auth.currentUser?.uid ?: return Response.Error(Exception("User not authenticated"))
+
+            val linksRef = firestore.collection("Tappze").document(userId)
+                .collection("SocialLinks").document("Links")
+
+            val updateMap = mapOf("links.$linkToDelete" to FieldValue.delete())
+
+            linksRef.update(updateMap).await()
+            Response.Success(Unit)
+        } catch (e: Exception) {
+            Response.Error(e)
+        }
+    }
+
+    override fun observeLinks(userId: String, onLinksUpdated: (Links?) -> Unit) {
+        val linksRef = firestore.collection("Tappze").document(userId)
+            .collection("SocialLinks").document("Links")
+
+        // Add the real-time listener
+        linksListener = linksRef.addSnapshotListener { snapshot, exception ->
+            if (exception != null) {
+                // Handle the error if needed
+                onLinksUpdated(null)
+                return@addSnapshotListener
+            }
+
+            if (snapshot != null && snapshot.exists()) {
+                val links = snapshot.toObject(Links::class.java)
+                onLinksUpdated(links)
+            } else {
+                onLinksUpdated(null)
+            }
+        }
+    }
+
+    // Method to stop observing links when no longer needed
+    override fun stopObservingLinks() {
+        linksListener?.remove()
+    }
 }
