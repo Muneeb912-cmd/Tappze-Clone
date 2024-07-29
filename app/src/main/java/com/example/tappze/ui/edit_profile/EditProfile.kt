@@ -64,7 +64,7 @@ class EditProfile : Fragment(), SocialLinkAdapter.OnItemClickListener {
     private lateinit var photoUri: Uri
 
     @Inject
-    lateinit var socialLinks: List<SocialLinks>
+    lateinit var socialLinks: ArrayList<SocialLinks>
 
     private val takePictureLauncher: ActivityResultLauncher<Uri> =
         registerForActivityResult(ActivityResultContracts.TakePicture()) { success ->
