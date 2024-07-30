@@ -1,4 +1,4 @@
-package com.example.tappze.ui
+package com.example.tappze.com.example.tappze.ui.settings
 
 import android.content.Intent
 import android.net.Uri
@@ -9,8 +9,10 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.app.AlertDialog
 import androidx.core.content.ContextCompat
+import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import com.example.tappze.R
+import com.example.tappze.com.example.tappze.ui.add_edit_link.AddEditLinkViewModel
 import com.example.tappze.com.example.tappze.ui.password_reset.ChangePasswordBottomSheet
 import com.example.tappze.com.example.tappze.utils.PreferencesHelper
 import com.example.tappze.databinding.FragmentSettingsBinding
@@ -21,7 +23,7 @@ import javax.inject.Inject
 class SettingsFragment : Fragment() {
 
     lateinit var binding: FragmentSettingsBinding
-
+    private val authViewModel: SettingsViewModel by viewModels()
     @Inject
     lateinit var preferencesHelper: PreferencesHelper
 
@@ -67,6 +69,29 @@ class SettingsFragment : Fragment() {
         binding.tvSignOut.setOnClickListener{
             showLogOutDialog()
         }
+
+        binding.tvContactUs.setOnClickListener{
+            authViewModel.gmailIntent(requireContext())
+            authViewModel.navigateToProfile.observe(viewLifecycleOwner) { intent ->
+                intent?.let { startActivity(it) }
+            }
+            authViewModel.showAlertDialog.observe(viewLifecycleOwner) { show ->
+                if (show) showAlertDialog()
+            }
+        }
+    }
+    private fun showAlertDialog() {
+        val message = "Gmail not found in your device!"
+        AlertDialog.Builder(requireContext())
+            .setIcon(R.drawable.ic_info)
+            .setTitle("App Not Found")
+            .setMessage(message)
+            .setCancelable(false)
+            .setPositiveButton("Yes") { _, _ ->
+
+            }
+            .setNegativeButton("No", null)
+            .show()
     }
 
     private fun showLogOutDialog() {

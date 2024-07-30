@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
 
-    tools:context=".ui.NfcFragment">
+    tools:context=".com.example.tappze.ui.nfc.NfcFragment">
 
     <androidx.appcompat.widget.Toolbar
         android:id="@+id/nfcFragmentToolbar"
@@ -90,5 +90,9 @@
                 android:textColor="@android:color/white" />
         </LinearLayout>
     </LinearLayout>
+    <!-- Adding the overlay -->
+    <include
+        layout="@layout/overlay_loading"
+        android:id="@+id/loadingOverlay"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -1,5 +1,7 @@
 package com.example.tappze.com.example.tappze.ui.add_edit_link
 
+import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -35,132 +37,148 @@ class SocialLinkBottomSheetFragment : BottomSheetDialogFragment() {
     private lateinit var socialLink: SocialLinks
     private lateinit var link: String
     private lateinit var helpText: String
+
     @Inject
     lateinit var helpTexts: Map<String, String>
+
     @Inject
     lateinit var socialLinks: ArrayList<SocialLinks>
+
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-
         binding = FragmentSocialLinkBottomSheetBinding.inflate(inflater, container, false)
-
-        arguments?.let {
-            socialLink = it.getParcelable<SocialLinks>(ARG_DATA_KEY)!!
-            link = it.getString("ARG_LINK_KEY")!!
-        }
-        userData = preferencesHelper.getUser()!!
-        populateUi()
-        binding.closeBottomSheet.setOnClickListener {
-            dismiss()
-        }
-
-        binding.helpBtn.setOnClickListener{
-            instructionAlertBox()
-        }
-
-        binding.deleteLink.setOnClickListener{
-            deleteLink()
-        }
-
+        setupUi()
         return binding.root
     }
 
+    private fun setupUi() {
+        arguments?.let {
+            socialLink = it.getParcelable(ARG_DATA_KEY)!!
+            link = it.getString(ARG_LINK_KEY)!!
+        }
+        userData = preferencesHelper.getUser()!!
+        populateUi()
+        binding.apply {
+            createAccountBtn.button.text="Save"
+            closeBottomSheet.setOnClickListener { dismiss() }
+            helpBtn.setOnClickListener { showInstructionAlertBox() }
+            deleteLink.setOnClickListener { deleteLink() }
+            createAccountBtn.button.setOnClickListener { saveLink(createAccountBtn.button, createAccountBtn.loadingIndicator) }
+            openLink.setOnClickListener { openLink() }
+        }
+    }
+
     private fun populateUi() {
-        socialLink.let {
-            val linkItem = socialLinks.find { it.text == socialLink.text }
-            linkItem?.let { item ->
-                binding.socialLinkImgBottomSheet.setImageResource(item.imageResId)
-                binding.bottomSheetHeading.text = item.text
-                binding.socialLinkInput.hint = item.text
-                helpText = helpTexts[item.text] ?: "No information available."
+        socialLinks.find { it.text == socialLink.text }?.let { item ->
+            binding.apply {
+                socialLinkImgBottomSheet.setImageResource(item.imageResId)
+                bottomSheetHeading.text = item.text
+                socialLinkInput.hint = item.text
             }
-        }
-        binding.socialLinkInput.setText(link)
-    }
-
-
-    override fun getTheme(): Int {
-        return R.style.BottomSheetDialogTheme
-    }
-
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-        val createAccountBtn = binding.root.findViewById<Button>(R.id.button)
-        val loadingIndicator = binding.root.findViewById<ProgressBar>(R.id.loadingIndicator)
-        "Save".also { createAccountBtn.text = it }
-        createAccountBtn.setOnClickListener {
-            saveLink(createAccountBtn, loadingIndicator)
+            helpText = helpTexts[item.text] ?: "No information available."
+            binding.socialLinkInput.setText(link)
         }
     }
 
-    private fun saveLink(createAccountBtn: Button, loadingIndicator: ProgressBar) {
+    override fun getTheme(): Int = R.style.BottomSheetDialogTheme
+
+    private fun saveLink(button: Button, loadingIndicator: ProgressBar) {
         authViewModel.addLink(
             userData.userId!!,
             binding.bottomSheetHeading.text.toString(),
             binding.socialLinkInput.text.toString()
         )
-        observeState(createAccountBtn, loadingIndicator)
+        observeState(button, loadingIndicator)
     }
 
-    private fun observeState(createAccountBtn: Button, loadingIndicator: ProgressBar) {
+    private fun observeState(button: Button, loadingIndicator: ProgressBar) {
         lifecycleScope.launch {
             authViewModel.saveLinksState.collect { response ->
                 when (response) {
-                    is Response.Loading -> {
-                        ButtonStateUtils("Save").showLoadingIndicator(createAccountBtn, loadingIndicator)
-                    }
-
+                    is Response.Loading -> ButtonStateUtils("Save").showLoadingIndicator(button, loadingIndicator)
                     is Response.Success -> {
-                        ButtonStateUtils("Save").hideLoadingIndicator(createAccountBtn, loadingIndicator)
+                        ButtonStateUtils("Save").hideLoadingIndicator(button, loadingIndicator)
                         dismiss()
                     }
-
                     is Response.Error -> {
-                        ButtonStateUtils("Save").hideLoadingIndicator(createAccountBtn, loadingIndicator)
-                        Toast.makeText(
-                            requireContext(),
-                            "${response.exception.message}",
-                            Toast.LENGTH_SHORT
-                        ).show()
+                        ButtonStateUtils("Save").hideLoadingIndicator(button, loadingIndicator)
+                        Toast.makeText(requireContext(), response.exception.message, Toast.LENGTH_SHORT).show()
                     }
                 }
             }
         }
     }
 
-    private fun instructionAlertBox() {
-        val builder = AlertDialog.Builder(requireContext())
-        builder.setMessage(helpText)
-        builder.setTitle("Instructions")
-        builder.setCancelable(false)
-        builder.setPositiveButton("Yes") { dialog, _ ->
-            dialog.cancel()
-        }
-        val alertDialog = builder.create()
-        alertDialog.show()
-    }
-
-    companion object {
-        private const val ARG_DATA_KEY = "argument_data_key"
-        fun newInstance(socialLink: SocialLinks, link: String): SocialLinkBottomSheetFragment {
-            val fragment = SocialLinkBottomSheetFragment()
-            val args = Bundle().apply {
-                putParcelable(ARG_DATA_KEY, socialLink)
-                putString("ARG_LINK_KEY", link)
-            }
-            fragment.arguments = args
-            return fragment
-        }
+    private fun showInstructionAlertBox() {
+        AlertDialog.Builder(requireContext())
+            .setTitle("Instructions")
+            .setMessage(helpText)
+            .setCancelable(false)
+            .setPositiveButton("Yes") { dialog, _ -> dialog.dismiss() }
+            .show()
     }
 
     private fun deleteLink() {
         authViewModel.deleteLink(socialLink.text)
-
         dismiss()
     }
+
+    private fun openLink() {
+        authViewModel.openProfile(socialLink.text, link, requireContext())
+        authViewModel.navigateToProfile.observe(viewLifecycleOwner) { intent ->
+            intent?.let { startActivity(it) }
+        }
+        authViewModel.showAlertDialog.observe(viewLifecycleOwner) { show ->
+            if (show) showAlertDialog(socialLink.text, link)
+        }
+    }
+
+    private fun showAlertDialog(appName: String, link: String) {
+        val message = "The $appName app is not installed. Do you want to proceed to the website?"
+        val websiteUrl = when (appName) {
+            "Instagram" -> "https://www.instagram.com/$link"
+            "Facebook" -> "https://www.facebook.com/$link"
+            "TikTok" -> "https://www.tiktok.com/@$link"
+            "WhatsApp" -> "https://wa.me/$link"
+            "LinkedIn" -> "https://www.linkedin.com/in/$link"
+            "Telegram" -> "https://t.me/$link"
+            "Snapchat" -> "https://www.snapchat.com/add/$link"
+            "X" -> "https://x.com/$link"
+            "YouTube" -> "https://www.youtube.com/channel/$link"
+            "Spotify" -> "https://open.spotify.com/playlist/$link"
+            "PayPal" -> "https://www.paypal.com/$link"
+            "Pinterest" -> "https://www.pinterest.com/$link"
+            "Skype" -> "https://join.skype.com/$link"
+            else -> "https://www.example.com"
+        }
+
+        AlertDialog.Builder(requireContext())
+            .setTitle("App Not Found")
+            .setMessage(message)
+            .setCancelable(false)
+            .setPositiveButton("Yes") { _, _ ->
+                val intent = Intent(Intent.ACTION_VIEW, Uri.parse(websiteUrl))
+                startActivity(intent)
+            }
+            .setNegativeButton("No", null)
+            .show()
+    }
+
+
+    companion object {
+        private const val ARG_DATA_KEY = "argument_data_key"
+        private const val ARG_LINK_KEY = "ARG_LINK_KEY"
+
+        fun newInstance(socialLink: SocialLinks, link: String): SocialLinkBottomSheetFragment {
+            return SocialLinkBottomSheetFragment().apply {
+                arguments = Bundle().apply {
+                    putParcelable(ARG_DATA_KEY, socialLink)
+                    putString(ARG_LINK_KEY, link)
+                }
+            }
+        }
+    }
 }
-
-
