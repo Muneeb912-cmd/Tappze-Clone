@@ -1,9 +1,13 @@
 package com.example.tappze.com.example.tappze.ui.profile
 
+import android.content.Context
+import android.content.Intent
 import android.view.View
+import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.tappze.com.example.tappze.utils.AppIntentUtil
 import com.example.tappze.repository.UserRepository
 import com.example.tappze.utils.Response
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -25,7 +29,7 @@ class ProfileViewModel @Inject constructor(
     private val _linksState = MutableStateFlow<Map<String, String>>(emptyMap())
     val linksState: StateFlow<Map<String, String>> = _linksState
 
-    var links = MutableLiveData<Map<String,String>>().apply {
+    var links = MutableLiveData<Map<String, String>>().apply {
         value = emptyMap()
     }
 
@@ -68,5 +72,4 @@ class ProfileViewModel @Inject constructor(
             _linksState.value = links?.links?.toMap() ?: emptyMap()
         }
     }
-
 }

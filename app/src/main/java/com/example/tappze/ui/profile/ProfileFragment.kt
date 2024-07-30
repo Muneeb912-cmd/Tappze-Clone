@@ -1,31 +1,25 @@
 package com.example.tappze.com.example.tappze.ui.profile
 
 import android.annotation.SuppressLint
+import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Button
-import android.widget.ProgressBar
-import android.widget.TextView
-import android.widget.Toast
+import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
-import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.bumptech.glide.request.RequestOptions
 import com.example.tappze.R
 import com.example.tappze.adapters.SocialLinkAdapter
-import com.example.tappze.com.example.tappze.models.Links
 import com.example.tappze.com.example.tappze.models.SocialLinks
 import com.example.tappze.com.example.tappze.ui.add_edit_link.SocialLinkBottomSheetFragment
-import com.example.tappze.com.example.tappze.utils.ButtonStateUtils
 import com.example.tappze.com.example.tappze.utils.PreferencesHelper
 import com.example.tappze.databinding.FragmentProfileBinding
 import com.example.tappze.utils.Response
@@ -184,6 +178,4 @@ class ProfileFragment : Fragment(), SocialLinkAdapter.OnItemClickListener {
         val bottomSheet = SocialLinkBottomSheetFragment.newInstance(socialLink, link)
         bottomSheet.show(childFragmentManager, bottomSheet.tag)
     }
-
-
 }

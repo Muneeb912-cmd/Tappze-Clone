@@ -51,6 +51,9 @@ class ShareFragment : Fragment() {
         binding.copyUrl.setOnClickListener {
             copyUrlToClipboard()
         }
+        binding.shareUrlBtn.setOnClickListener{
+            authViewModel.shareUserIntent(requireContext(),url)
+        }
     }
 
     private fun copyUrlToClipboard() {

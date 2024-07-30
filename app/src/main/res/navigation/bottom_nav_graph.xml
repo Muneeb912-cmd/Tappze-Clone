@@ -20,11 +20,6 @@
         android:label="fragment_edit_profile"
         tools:layout="@layout/fragment_edit_profile" />
     <fragment
-        android:id="@+id/nfcFragment"
-        android:name="com.example.tappze.ui.NfcFragment"
-        android:label="fragment_nfc"
-        tools:layout="@layout/fragment_nfc" />
-    <fragment
         android:id="@+id/shareFragment"
         android:name="com.example.tappze.com.example.tappze.ui.share_fragment.ShareFragment"
         android:label="fragment_share"
@@ -36,7 +31,7 @@
         tools:layout="@layout/fragment_analytics" />
     <fragment
         android:id="@+id/settingsFragment"
-        android:name="com.example.tappze.ui.SettingsFragment"
+        android:name="com.example.tappze.com.example.tappze.ui.settings.SettingsFragment"
         android:label="fragment_settings"
         tools:layout="@layout/fragment_settings" >
         <action
@@ -48,4 +43,8 @@
         android:name="com.example.tappze.ui.SubscriptionFragment"
         android:label="fragment_subscription"
         tools:layout="@layout/fragment_subscription" />
+    <fragment
+        android:id="@+id/nfcFragment"
+        android:name="com.example.tappze.ui.nfc.NfcFragment"
+        android:label="NfcFragment" />
 </navigation>

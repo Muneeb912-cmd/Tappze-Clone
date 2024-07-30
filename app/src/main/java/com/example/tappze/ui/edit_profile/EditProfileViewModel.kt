@@ -24,6 +24,9 @@ class EditProfileViewModel @Inject constructor(
     private val _links = MutableLiveData<Map<String, String>>()
     val links: LiveData<Map<String, String>> get() = _links
 
+    private val _linksState = MutableStateFlow<Map<String, String>>(emptyMap())
+    val linksState: StateFlow<Map<String, String>> = _linksState
+
     fun uploadImgAndUpdateUser(userData: User) {
         viewModelScope.launch {
             _updateUserState.value = Response.Loading
@@ -56,6 +59,12 @@ class EditProfileViewModel @Inject constructor(
                 _saveLinksState.value = Response.Error(e)
                 _links.value = emptyMap() // or handle as needed
             }
+        }
+    }
+
+    fun observeLinks(userId: String) {
+        userRepository.observeLinks(userId) { links ->
+            _linksState.value = links?.links?.toMap() ?: emptyMap()
         }
     }
 }
