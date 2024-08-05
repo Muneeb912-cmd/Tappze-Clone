@@ -15,23 +15,23 @@ object StaticDataModule {
     @Singleton
     fun provideSocialLinks(): ArrayList<SocialLinks> {
         return arrayListOf(
-            SocialLinks(R.drawable.ic_mobile, "Phone"),
-            SocialLinks(R.drawable.ic_instagram, "Instagram"),
-            SocialLinks(R.drawable.ic_facebook, "Facebook"),
-            SocialLinks(R.drawable.ic_tiktok, "TikTok"),
-            SocialLinks(R.drawable.ic_whatsapp, "Whatsapp"),
-            SocialLinks(R.drawable.ic_linkedin, "LinkedIn"),
-            SocialLinks(R.drawable.ic_telegram, "Telegram"),
-            SocialLinks(R.drawable.ic_snapchat, "Snapchat"),
-            SocialLinks(R.drawable.ic_twitter, "X"),
-            SocialLinks(R.drawable.ic_internet, "Website"),
-            SocialLinks(R.drawable.ic_youtube, "YouTube"),
-            SocialLinks(R.drawable.ic_spotify, "Spotify"),
-            SocialLinks(R.drawable.ic_gmail, "Email"),
-            SocialLinks(R.drawable.ic_paypal, "PayPal"),
-            SocialLinks(R.drawable.ic_pinterest, "Pinterest"),
-            SocialLinks(R.drawable.ic_skype, "Skype"),
-            SocialLinks(R.drawable.ic_calendly, "Calendly")
+            SocialLinks(R.drawable.ic_mobile, "Phone", isSaved = false),
+            SocialLinks(R.drawable.ic_instagram, "Instagram", isSaved = false),
+            SocialLinks(R.drawable.ic_facebook, "Facebook", isSaved = false),
+            SocialLinks(R.drawable.ic_tiktok, "TikTok", isSaved = false),
+            SocialLinks(R.drawable.ic_whatsapp, "Whatsapp", isSaved = false),
+            SocialLinks(R.drawable.ic_linkedin, "LinkedIn", isSaved = false),
+            SocialLinks(R.drawable.ic_telegram, "Telegram", isSaved = false),
+            SocialLinks(R.drawable.ic_snapchat, "Snapchat", isSaved = false),
+            SocialLinks(R.drawable.ic_twitter, "X", isSaved = false),
+            SocialLinks(R.drawable.ic_internet, "Website", isSaved = false),
+            SocialLinks(R.drawable.ic_youtube, "YouTube", isSaved = false),
+            SocialLinks(R.drawable.ic_spotify, "Spotify", isSaved = false),
+            SocialLinks(R.drawable.ic_gmail, "Email", isSaved = false),
+            SocialLinks(R.drawable.ic_paypal, "PayPal", isSaved = false),
+            SocialLinks(R.drawable.ic_pinterest, "Pinterest", isSaved = false),
+            SocialLinks(R.drawable.ic_skype, "Skype", isSaved = false),
+            SocialLinks(R.drawable.ic_calendly, "Calendly", isSaved = false)
         )
     }
 

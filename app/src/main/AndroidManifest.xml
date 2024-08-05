@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools">
-    <!-- Camera permission -->
+
     <uses-feature
         android:name="android.hardware.camera"
         android:required="false" />
@@ -12,14 +12,19 @@
     <uses-permission android:name="android.permission.CAMERA" />
     <uses-permission android:name="android.permission.CALL_PHONE" />
     <uses-permission android:name="android.permission.NFC" />
-    <uses-feature android:name="android.hardware.nfc" android:required="true" />
 
-    <!-- Storage permission -->
-    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"
+    <uses-feature
+        android:name="android.hardware.nfc"
+        android:required="true" />
+
+    <uses-permission
+        android:name="android.permission.READ_EXTERNAL_STORAGE"
         android:maxSdkVersion="32" />
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"
+    <uses-permission
+        android:name="android.permission.WRITE_EXTERNAL_STORAGE"
         android:maxSdkVersion="32"
         tools:ignore="ScopedStorage" />
+
     <application
         android:name="com.example.tappze.MyApplication"
         android:allowBackup="true"
@@ -43,32 +48,34 @@
         </provider>
         <activity
             android:name=".com.example.tappze.ui.main.MainActivity"
-            android:theme="@style/Theme.Tappze"
             android:configChanges="orientation|screenSize"
-            android:exported="true">
+            android:exported="true"
+            android:theme="@style/Theme.Tappze">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+            <intent-filter>
+                <data android:scheme="myapp" />
                 <action android:name="android.intent.action.VIEW" />
                 <category android:name="android.intent.category.DEFAULT" />
                 <category android:name="android.intent.category.BROWSABLE" />
-                <data android:scheme="myapp" />
-                <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
 
         <receiver
-            android:name=".NetworkStatusReceiver"
+            android:name=".com.example.tappze.broadcast.NetworkStatusReceiver"
             android:enabled="true"
             android:exported="false">
             <intent-filter>
-                <action android:name="android.net.conn.CONNECTIVITY_CHANGE"
+                <action
+                    android:name="android.net.conn.CONNECTIVITY_CHANGE"
                     tools:ignore="BatteryLife" />
             </intent-filter>
         </receiver>
 
-        <!-- Register BatteryStatusReceiver -->
         <receiver
-            android:name=".BatteryStatusReceiver"
+            android:name=".com.example.tappze.broadcast.BatteryStatusReceiver"
             android:enabled="true"
             android:exported="false">
             <intent-filter>

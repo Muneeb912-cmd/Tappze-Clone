@@ -6,6 +6,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.tappze.adapters.SocialLinkAdapter
 import com.example.tappze.com.example.tappze.utils.AppIntentUtil
 import com.example.tappze.repository.UserRepository
 import com.example.tappze.utils.Response
@@ -34,6 +35,7 @@ class AddEditLinkViewModel @Inject constructor(
             _saveLinksState.value = userRepository.addLink(userId, appName, link)
         }
     }
+
     fun deleteLink(linkToDelete: String) {
         viewModelScope.launch {
             _saveLinksState.value = Response.Loading
@@ -42,9 +44,11 @@ class AddEditLinkViewModel @Inject constructor(
                     is Response.Success -> {
                         _saveLinksState.value = Response.Success(Unit)
                     }
+
                     is Response.Error -> {
                         _saveLinksState.value = response
                     }
+
                     Response.Loading -> {
                         // Handle if needed
                     }

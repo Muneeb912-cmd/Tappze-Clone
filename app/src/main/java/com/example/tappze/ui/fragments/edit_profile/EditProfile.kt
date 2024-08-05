@@ -100,6 +100,7 @@ class EditProfile : Fragment(), SocialLinkAdapter.OnItemClickListener {
         setupUI()
         getUserDataFromPreferences()
         observeLinks()
+        setupSocialLinkAdapter()
     }
 
     @SuppressLint("SetTextI18n")
@@ -107,7 +108,6 @@ class EditProfile : Fragment(), SocialLinkAdapter.OnItemClickListener {
         with(binding) {
             selectGender.setAdapter(createAdapter(R.array.gender))
             addImage.setOnClickListener { showImageSourceDialog() }
-            setupSocialLinkAdapter()
             selectDob.setOnClickListener { showDatePicker() }
             cancelBtn.setOnClickListener { findNavController().popBackStack() }
             createAccountBtn.button.text="Save"
@@ -131,7 +131,9 @@ class EditProfile : Fragment(), SocialLinkAdapter.OnItemClickListener {
     @SuppressLint("SetTextI18n")
     private fun showDatePicker() {
         val calendar = Calendar.getInstance()
-        DatePickerDialog(
+
+        // Create the DatePickerDialog
+        val datePickerDialog = DatePickerDialog(
             requireContext(),
             R.style.CustomDatePickerDialogTheme,
             { _, year, month, day ->
@@ -140,8 +142,19 @@ class EditProfile : Fragment(), SocialLinkAdapter.OnItemClickListener {
             calendar.get(Calendar.YEAR),
             calendar.get(Calendar.MONTH),
             calendar.get(Calendar.DAY_OF_MONTH)
-        ).show()
+        )
+
+        val minDateCalendar = Calendar.getInstance().apply {
+            set(1950, Calendar.JANUARY, 1)
+        }
+        datePickerDialog.datePicker.minDate = minDateCalendar.timeInMillis
+        val maxDateCalendar = Calendar.getInstance().apply {
+            set(2020, Calendar.DECEMBER, 31)
+        }
+        datePickerDialog.datePicker.maxDate = maxDateCalendar.timeInMillis
+        datePickerDialog.show()
     }
+
 
     private fun setupSocialLinkAdapter() {
         binding.socialLinks.apply {
@@ -212,7 +225,13 @@ class EditProfile : Fragment(), SocialLinkAdapter.OnItemClickListener {
     private fun observeLinks() {
         lifecycleScope.launch {
             authViewModel.linksState.collect { links ->
-                dataList = links
+                val typedLinks: Map<String, String> = links
+                dataList = typedLinks
+
+                val updatedSocialLinks = socialLinks.map { link ->
+                    link.copy(isSaved = typedLinks.contains(link.text))
+                }
+                (binding.socialLinks.adapter as? SocialLinkAdapter)?.updateItems(updatedSocialLinks)
             }
         }
     }
@@ -298,6 +317,9 @@ class EditProfile : Fragment(), SocialLinkAdapter.OnItemClickListener {
                             Toast.LENGTH_SHORT
                         ).show()
                     }
+
+
+                    Response.Loading -> TODO()
                 }
             }
         }

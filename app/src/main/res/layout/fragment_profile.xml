@@ -13,7 +13,7 @@
         android:layout_height="wrap_content"
         app:cardCornerRadius="15dp"
         android:elevation="10dp"
-
+        android:id="@+id/cardView"
         app:cardBackgroundColor="@android:color/black">
 
         <androidx.constraintlayout.widget.ConstraintLayout
@@ -30,6 +30,7 @@
                 android:background="@color/md_theme_dark_secondary"
                 android:padding="8dp"
                 android:src="@drawable/pngegg"
+                android:scaleType="centerCrop"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"

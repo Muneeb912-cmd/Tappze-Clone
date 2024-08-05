@@ -1,6 +1,6 @@
 package com.example.tappze.com.example.tappze.broadcast
 
-class StatusObserverImp: StatusObserver {
+class StatusObserverImp: NetworkStatusObserver,BatteryStatusObserver {
 
     private var networkStatusListeners: MutableList<(Boolean) -> Unit> = mutableListOf()
     private var batteryStatusListeners: MutableList<(Float) -> Unit> = mutableListOf()
