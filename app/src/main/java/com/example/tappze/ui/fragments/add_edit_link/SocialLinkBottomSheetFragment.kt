@@ -13,6 +13,7 @@ import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import com.example.tappze.R
+import com.example.tappze.adapters.SocialLinkAdapter
 import com.example.tappze.com.example.tappze.utils.ButtonStateUtils
 import com.example.tappze.com.example.tappze.utils.PreferencesHelper
 import com.example.tappze.databinding.FragmentSocialLinkBottomSheetBinding

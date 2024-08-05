@@ -17,13 +17,9 @@ import javax.inject.Inject
 class EditProfileViewModel @Inject constructor(
     private val userRepository: UserRepository
 ) : ViewModel() {
+
     private val _updateUserState = MutableStateFlow<Response<Unit>>(Response.Loading)
     val updateUserState: StateFlow<Response<Unit>> = _updateUserState
-    private val _saveLinksState = MutableStateFlow<Response<Unit>>(Response.Loading)
-    val saveLinksState: StateFlow<Response<Unit>> = _saveLinksState
-    private val _links = MutableLiveData<Map<String, String>>()
-    val links: LiveData<Map<String, String>> get() = _links
-
     private val _linksState = MutableStateFlow<Map<String, String>>(emptyMap())
     val linksState: StateFlow<Map<String, String>> = _linksState
 
@@ -31,34 +27,6 @@ class EditProfileViewModel @Inject constructor(
         viewModelScope.launch {
             _updateUserState.value = Response.Loading
             _updateUserState.value = userRepository.uploadImageAndUpdateUser(userData)
-        }
-    }
-
-    fun getSavedLinks(userId: String) {
-        viewModelScope.launch {
-            _saveLinksState.value = Response.Loading
-            try {
-                when (val existingLinksResponse = userRepository.getExistingLinks(userId)) {
-                    is Response.Success -> {
-                        val existingLinks = existingLinksResponse.data
-                        val updatedLinks = existingLinks.links.toMutableMap()
-                        _links.value = updatedLinks
-                        _saveLinksState.value = Response.Success(Unit)
-                    }
-
-                    is Response.Error -> {
-                        _saveLinksState.value = existingLinksResponse
-                        _links.value = emptyMap() // or handle as needed
-                    }
-
-                    Response.Loading -> {
-                        // Handle if needed
-                    }
-                }
-            } catch (e: Exception) {
-                _saveLinksState.value = Response.Error(e)
-                _links.value = emptyMap() // or handle as needed
-            }
         }
     }
 

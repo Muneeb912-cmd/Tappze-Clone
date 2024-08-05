@@ -4,4 +4,4 @@ import android.os.Parcelable
 import kotlinx.parcelize.Parcelize
 
 @Parcelize
-data class SocialLinks(val imageResId: Int, val text: String):Parcelable
+data class SocialLinks(val imageResId: Int, val text: String, var isSaved: Boolean) : Parcelable

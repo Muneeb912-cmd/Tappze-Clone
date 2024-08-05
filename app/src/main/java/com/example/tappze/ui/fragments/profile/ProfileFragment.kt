@@ -62,6 +62,9 @@ class ProfileFragment : Fragment(), SocialLinkAdapter.OnItemClickListener {
         binding.editProfile.setOnClickListener {
             findNavController().navigate(R.id.action_profileFragment_to_editProfile)
         }
+        binding.cardView.setOnClickListener{
+            findNavController().navigate(R.id.action_profileFragment_to_editProfile)
+        }
         initializeAdapter()
         return binding.root
     }
@@ -164,7 +167,7 @@ class ProfileFragment : Fragment(), SocialLinkAdapter.OnItemClickListener {
     private fun Map<String, String>.toSocialLinksList(imageResMap: Map<String, Int>): List<SocialLinks> {
         return this.map { (key, _) ->
             val imageResId = imageResMap[key] ?: R.drawable.ic_photo
-            SocialLinks(imageResId, key)
+            SocialLinks(imageResId, key, isSaved = false)
         }
     }
     override fun onItemClick(socialLink: SocialLinks) {
