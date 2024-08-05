@@ -29,22 +29,4 @@ object PermissionUtils {
         // Request permissions
         requestPermissions(activity, requestCode, *permissions)
     }
-
-    fun handlePermissionsResult(
-        requestCode: Int,
-        permissions: Array<out String>,
-        grantResults: IntArray,
-        onPermissionsGranted: () -> Unit,
-        onPermissionsDenied: () -> Unit
-    ) {
-        if (requestCode == REQUEST_CODE_PERMISSIONS) {
-            if (grantResults.isNotEmpty() && grantResults.all { it == PackageManager.PERMISSION_GRANTED }) {
-                onPermissionsGranted()
-            } else {
-                onPermissionsDenied()
-            }
-        }
-    }
-
-    private const val REQUEST_CODE_PERMISSIONS = 1001
 }

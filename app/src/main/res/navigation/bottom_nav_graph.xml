@@ -7,7 +7,7 @@
 
     <fragment
         android:id="@+id/profileFragment"
-        android:name="com.example.tappze.com.example.tappze.ui.profile.ProfileFragment"
+        android:name="com.example.tappze.com.example.tappze.ui.fragments.profile.ProfileFragment"
         android:label="fragment_profile"
         tools:layout="@layout/fragment_profile" >
         <action
@@ -16,35 +16,40 @@
     </fragment>
     <fragment
         android:id="@+id/editProfile"
-        android:name="com.example.tappze.com.example.tappze.ui.edit_profile.EditProfile"
+        android:name="com.example.tappze.com.example.tappze.ui.fragments.edit_profile.EditProfile"
         android:label="fragment_edit_profile"
         tools:layout="@layout/fragment_edit_profile" />
     <fragment
         android:id="@+id/shareFragment"
-        android:name="com.example.tappze.com.example.tappze.ui.share_fragment.ShareFragment"
+        android:name="com.example.tappze.com.example.tappze.ui.fragments.share_fragment.ShareFragment"
         android:label="fragment_share"
         tools:layout="@layout/fragment_share" />
     <fragment
         android:id="@+id/analyticsFragment"
-        android:name="com.example.tappze.ui.AnalyticsFragment"
+        android:name="com.example.tappze.com.example.tappze.ui.fragments.AnalyticsFragment"
         android:label="fragment_analytics"
         tools:layout="@layout/fragment_analytics" />
     <fragment
         android:id="@+id/settingsFragment"
-        android:name="com.example.tappze.com.example.tappze.ui.settings.SettingsFragment"
+        android:name="com.example.tappze.com.example.tappze.ui.fragments.settings.SettingsFragment"
         android:label="fragment_settings"
         tools:layout="@layout/fragment_settings" >
         <action
             android:id="@+id/action_settingsFragment_to_subscriptionFragment"
             app:destination="@id/subscriptionFragment" />
+        <action
+            android:id="@+id/action_settingsFragment_to_signInFragment"
+            app:destination="@id/signInFragment" />
+        <deepLink
+            app:uri="myapp://sign_in" />
     </fragment>
     <fragment
         android:id="@+id/subscriptionFragment"
-        android:name="com.example.tappze.ui.SubscriptionFragment"
+        android:name="com.example.tappze.com.example.tappze.ui.fragments.SubscriptionFragment"
         android:label="fragment_subscription"
         tools:layout="@layout/fragment_subscription" />
     <fragment
         android:id="@+id/nfcFragment"
-        android:name="com.example.tappze.ui.nfc.NfcFragment"
+        android:name="com.example.tappze.com.example.tappze.ui.fragments.nfc.NfcFragment"
         android:label="NfcFragment" />
 </navigation>
