@@ -7,7 +7,7 @@
 
     <fragment
         android:id="@+id/createAccountFragment"
-        android:name="com.example.tappze.ui.CreateAccountFragment"
+        android:name="com.example.tappze.com.example.tappze.ui.fragments.CreateAccountFragment"
         android:label="fragment_create_account_"
         tools:layout="@layout/fragment_create_account_">
         <action
@@ -22,7 +22,7 @@
     </fragment>
     <fragment
         android:id="@+id/signInFragment"
-        android:name="com.example.tappze.com.example.tappze.ui.sign_in.SignInFragment"
+        android:name="com.example.tappze.com.example.tappze.ui.fragments.sign_in.SignInFragment"
         android:label="fragment_sign_in"
         tools:layout="@layout/fragment_sign_in">
         <action
@@ -36,7 +36,7 @@
     </fragment>
     <fragment
         android:id="@+id/signUpFragment"
-        android:name="com.example.tappze.com.example.tappze.ui.sign_up.SignUpFragment"
+        android:name="com.example.tappze.com.example.tappze.ui.fragments.sign_up.SignUpFragment"
         android:label="fragment_sign_up"
         tools:layout="@layout/fragment_sign_up">
         <action
@@ -45,7 +45,7 @@
     </fragment>
     <fragment
         android:id="@+id/mainAppActivity2"
-        android:name="com.example.tappze.ui.MainAppActivityFragment"
+        android:name="com.example.tappze.com.example.tappze.ui.fragments.MainAppActivityFragment"
         android:label="fragment_main_app_activity"
         tools:layout="@layout/fragment_main_app_activity">
         <action

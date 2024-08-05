@@ -149,9 +149,20 @@ class AppIntentUtil @Inject constructor(
             false
         }
     }
-    fun buyTappzeIntent(url: String): Intent {
+    fun buyTappzeCard(): Intent {
         val intent = Intent(Intent.ACTION_VIEW, Uri.parse("https://tappze.com/shop/"))
         return Intent.createChooser(intent, "Choose browser")
     }
+
+    fun tappzeTermsAndServices(): Intent {
+        val intent = Intent(Intent.ACTION_VIEW, Uri.parse("https://tappze.com/"))
+        return Intent.createChooser(intent, "Choose browser")
+    }
+
+    fun tappzePrivacyPolicy(): Intent {
+        val intent = Intent(Intent.ACTION_VIEW, Uri.parse("https://tappze.com/privacy_policy"))
+        return Intent.createChooser(intent, "Choose browser")
+    }
+
 }
 
