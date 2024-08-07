@@ -2,6 +2,7 @@ package com.example.tappze.com.example.tappze.ui.fragments.sign_up
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.tappze.com.example.tappze.repository.UserAuthentication
 import com.example.tappze.repository.UserRepository
 import com.example.tappze.utils.Response
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -12,7 +13,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class SignUpViewModel @Inject constructor(
-    private val userRepository: UserRepository
+    private val auth: UserAuthentication
 ) : ViewModel() {
     private val _signUpState = MutableStateFlow<Response<Unit>>(Response.Loading)
     val signUpState: StateFlow<Response<Unit>> = _signUpState
@@ -21,7 +22,7 @@ class SignUpViewModel @Inject constructor(
         viewModelScope.launch {
             _signUpState.value = Response.Loading
             _signUpState.value =
-                userRepository.signUpWithEmailPassword(email, password, name, userName)
+                auth.signUpWithEmailPassword(email, password, name, userName)
         }
     }
 

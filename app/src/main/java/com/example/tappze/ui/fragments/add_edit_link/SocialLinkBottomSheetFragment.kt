@@ -45,7 +45,6 @@ class SocialLinkBottomSheetFragment : BottomSheetDialogFragment() {
     @Inject
     lateinit var socialLinks: ArrayList<SocialLinks>
 
-
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -63,7 +62,7 @@ class SocialLinkBottomSheetFragment : BottomSheetDialogFragment() {
         userData = preferencesHelper.getUser()!!
         populateUi()
         binding.apply {
-            createAccountBtn.button.text="Save"
+            createAccountBtn.button.text = "Save"
             closeBottomSheet.setOnClickListener { dismiss() }
             helpBtn.setOnClickListener { showInstructionAlertBox() }
             deleteLink.setOnClickListener { deleteLink() }
@@ -128,12 +127,15 @@ class SocialLinkBottomSheetFragment : BottomSheetDialogFragment() {
     }
 
     private fun openLink() {
-        authViewModel.openProfile(socialLink.text, link, requireContext())
-        authViewModel.navigateToProfile.observe(viewLifecycleOwner) { intent ->
-            intent?.let { startActivity(it) }
-        }
-        authViewModel.showAlertDialog.observe(viewLifecycleOwner) { show ->
-            if (show) showAlertDialog(socialLink.text, link)
+        val intent = authViewModel.getAppIntent(socialLink.text, link)
+        if (intent != null) {
+            if (intent.resolveActivity(requireContext().packageManager) != null) {
+                startActivity(intent)
+            } else {
+                showAlertDialog(socialLink.text, link)
+            }
+        } else {
+            showAlertDialog(socialLink.text, link)
         }
     }
 
@@ -167,7 +169,6 @@ class SocialLinkBottomSheetFragment : BottomSheetDialogFragment() {
             .setNegativeButton("No", null)
             .show()
     }
-
 
     companion object {
         private const val ARG_DATA_KEY = "argument_data_key"

@@ -5,15 +5,16 @@ import android.content.Intent
 import android.graphics.Bitmap
 import androidx.lifecycle.ViewModel
 import com.example.tappze.BuildConfig
+import com.example.tappze.com.example.tappze.repository.SocialLinksRepository
 import com.example.tappze.repository.UserRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 @HiltViewModel
 class ShareFragmentViewModel @Inject constructor(
-    private val userRepository: UserRepository
+    private val manageLinks: SocialLinksRepository
 ):ViewModel() {
     fun generateQR(url:String): Bitmap? {
-        return userRepository.generateQRCode(url)
+        return manageLinks.generateQRCode(url)
     }
 
     fun shareUserIntent(context: Context,link:String) {

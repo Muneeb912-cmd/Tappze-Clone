@@ -5,6 +5,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.tappze.com.example.tappze.models.User
+import com.example.tappze.com.example.tappze.repository.UserAuthentication
 import com.example.tappze.repository.UserRepository
 import com.example.tappze.utils.Response
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -14,7 +15,7 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 @HiltViewModel
 class SignInViewModel@Inject constructor(
-    private val userRepository: UserRepository
+    private val auth: UserAuthentication
 ) : ViewModel() {
 
     private val _signInState = MutableStateFlow<Response<User>>(Response.Loading)
@@ -26,7 +27,7 @@ class SignInViewModel@Inject constructor(
     fun signInWithEmailPassword(email: String, password: String) {
         viewModelScope.launch {
             _signInState.value = Response.Loading
-            when (val response = userRepository.signInWithEmailPassword(email, password)) {
+            when (val response = auth.signInWithEmailPassword(email, password)) {
                 is Response.Success -> {
                     _userData.value = response.data
                     _signInState.value = response

@@ -16,14 +16,11 @@ class MyApplication : Application() {
 
     @Inject
     lateinit var networkStatusReceiver: NetworkStatusReceiver
-
     @Inject
     lateinit var batteryStatusReceiver: BatteryStatusReceiver
 
     override fun onCreate() {
         super.onCreate()
-
-        // Register receivers
         val networkFilter = IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION)
         registerReceiver(networkStatusReceiver, networkFilter)
 
@@ -33,7 +30,6 @@ class MyApplication : Application() {
 
     override fun onTerminate() {
         super.onTerminate()
-        // Unregister receivers when the app terminates
         unregisterReceiver(networkStatusReceiver)
         unregisterReceiver(batteryStatusReceiver)
     }

@@ -7,6 +7,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.tappze.com.example.tappze.repository.SocialLinksRepository
 import com.example.tappze.com.example.tappze.utils.AppIntentUtil
 import com.example.tappze.repository.UserRepository
 import com.example.tappze.utils.Response
@@ -20,7 +21,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class ProfileViewModel @Inject constructor(
-    private val userRepository: UserRepository
+    private val manageLinks: SocialLinksRepository,
 ) : ViewModel() {
 
     private val _saveLinksState = MutableStateFlow<Response<Unit>>(Response.Loading)
@@ -37,7 +38,7 @@ class ProfileViewModel @Inject constructor(
         viewModelScope.launch {
             _saveLinksState.value = Response.Loading
             try {
-                when (val existingLinksResponse = userRepository.getExistingLinks(userId)) {
+                when (val existingLinksResponse = manageLinks.getExistingLinks(userId)) {
                     is Response.Success -> {
                         val existingLinks = existingLinksResponse.data
                         val updatedLinks = existingLinks.links.toMutableMap()
@@ -68,7 +69,7 @@ class ProfileViewModel @Inject constructor(
     }
 
     fun observeLinks(userId: String) {
-        userRepository.observeLinks(userId) { links ->
+        manageLinks.observeLinks(userId) { links ->
             _linksState.value = links?.links?.toMap() ?: emptyMap()
         }
     }

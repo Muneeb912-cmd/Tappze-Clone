@@ -21,26 +21,19 @@ class SharedViewModel @Inject constructor(
     val batteryStatus: LiveData<Float> get() = _batteryStatus
 
     init {
-        // Store listeners to be used for removal later
         val networkStatusListener: (Boolean) -> Unit = { isConnected ->
             _networkStatus.postValue(isConnected)
         }
         val batteryStatusListener: (Float) -> Unit = { batteryPct ->
             _batteryStatus.postValue(batteryPct)
         }
-
-        // Add listeners
         networkStatusObserver.addNetworkStatusListener(networkStatusListener)
         batteryStatusObserver.addBatteryStatusListener(batteryStatusListener)
-
-        // Ensure listeners are removed when ViewModel is cleared
         onCleared {
             networkStatusObserver.removeNetworkStatusListener(networkStatusListener)
             batteryStatusObserver.removeBatteryStatusListener(batteryStatusListener)
         }
     }
-
-    // A utility function to handle listener removal in onCleared
     private fun onCleared(action: () -> Unit) {
         action()
     }
