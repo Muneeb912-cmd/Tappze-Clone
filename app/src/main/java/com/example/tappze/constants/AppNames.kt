@@ -1,0 +1,20 @@
+package com.example.tappze.com.example.tappze.constants
+object AppNames {
+    const val PHONE = "Phone"
+    const val INSTAGRAM = "Instagram"
+    const val FACEBOOK = "Facebook"
+    const val TIKTOK = "TikTok"
+    const val WHATSAPP = "Whatsapp"
+    const val LINKEDIN = "LinkedIn"
+    const val TELEGRAM = "Telegram"
+    const val SNAPCHAT = "Snapchat"
+    const val X = "X"
+    const val WEBSITE = "Website"
+    const val YOUTUBE = "YouTube"
+    const val SPOTIFY = "Spotify"
+    const val EMAIL = "Email"
+    const val PAYPAL = "PayPal"
+    const val PINTEREST = "Pinterest"
+    const val SKYPE = "Skype"
+    const val CALENDLY = "Calendly"
+}
